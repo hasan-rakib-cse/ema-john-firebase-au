@@ -55,7 +55,7 @@ const Review = () => {
             </Col>
             <Col className="cart-container " xs={{ span: 12, order: 1}} lg={{span: 3, order: 2}}>
               <Cart cart={cart} >
-                <button className='main-button' onClick={handleProceedCheckout}>Place Order</button>
+                <button className='main-button' onClick={handleProceedCheckout}>Placed Order</button>
               </Cart>  
             </Col>
         </Row>
