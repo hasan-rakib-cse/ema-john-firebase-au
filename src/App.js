@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter,  Route, Routes } from 'react-router-dom';
 
 import './App.css';
@@ -12,22 +12,25 @@ import ProductDetail from './components/ProductDetail/ProductDetail';
 import Shipment from './components/Shipment/Shipment';
 import Login from './components/Login/Login';
 
+
+
 function App() {
+
   return (
     <div className='overflow-hidden'>
-      <BrowserRouter>
-      <Header />
-        <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/shop' element={<Shop />} />
-          <Route path='/product/:key' element={<ProductDetail />} />
-          <Route path='/review' element={<Review />} />
-          <Route path='/manageInventory' element={<Manage />} />
-          <Route path='/shipment' element={<Shipment />} />
-          <Route path='/login' element={<Login />} />
-          <Route path='*' element={<Error />} />
-        </Routes>
-      </BrowserRouter>
+        <BrowserRouter>
+        <Header />
+          <Routes>
+            <Route path='/' element={<Home />} />
+            <Route path='/shop' element={<Shop />} />
+            <Route path='/product/:key' element={<ProductDetail />} />
+            <Route path='/review' element={<Review />} />
+            <Route path='/manageInventory' element={<Manage />} />
+            <Route path='/shipment' element={<Shipment />} />
+            <Route path='/login' element={<Login />} />
+            <Route path='*' element={<Error />} />
+          </Routes>
+        </BrowserRouter>
     </div>
   );
 }

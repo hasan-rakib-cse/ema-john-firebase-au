@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { clearLocalShoppingCart, getDatabaseCart, removeFromDatabaseCart } from '../../utilities/databaseManager'
 import fakeData from '../../fakeData'
 import ReviewItem from '../ReviewItem/ReviewItem'
@@ -9,8 +10,10 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
 const Review = () => {
-  const [cart, setCart] = useState([])
-  const [orderPlaced, setOrderPlaced] = useState(false)
+  const [cart, setCart] = useState([]);
+  const [orderPlaced, setOrderPlaced] = useState(false);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     // cart
@@ -33,7 +36,7 @@ const Review = () => {
     removeFromDatabaseCart(productKey);
   }
 
-  const handlePlacedOrder = () => {
+  const handleProceedCheckout = () => {
     setCart([]);
     setOrderPlaced(true)
     clearLocalShoppingCart()
@@ -52,7 +55,7 @@ const Review = () => {
             </Col>
             <Col className="cart-container " xs={{ span: 12, order: 1}} lg={{span: 3, order: 2}}>
               <Cart cart={cart} >
-                <button className='main-button' onClick={handlePlacedOrder}>Place Order</button>
+                <button className='main-button' onClick={handleProceedCheckout}>Place Order</button>
               </Cart>  
             </Col>
         </Row>
