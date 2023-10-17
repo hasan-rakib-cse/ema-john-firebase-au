@@ -26,6 +26,9 @@ function Login() {
     success: false
   })
 
+  // Use context Api for data passing anywhere
+  const [loggedInUser, setLoggedInUser] = useContext(UserContext);
+
   // Sign In with Google
   const handleSignIn = () => {
     signInWithPopup(auth, googleProvider)
@@ -118,6 +121,7 @@ function Login() {
         newUserInfo.error = '';
         newUserInfo.success = true;
         setUser(newUserInfo);
+        setLoggedInUser(newUserInfo);
         console.log('sign In User Info', res.user);
       })
       .catch((error) => {

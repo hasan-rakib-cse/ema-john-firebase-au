@@ -11,13 +11,18 @@ import Manage from './components/Manage/ManageInventory';
 import ProductDetail from './components/ProductDetail/ProductDetail';
 import Shipment from './components/Shipment/Shipment';
 import Login from './components/Login/Login';
+import { UserContext } from './components/UserContext/UserContext';
 
 
 
 function App() {
 
+  const [loggedInUser, setLoggedInUser] = useState({});
+
   return (
     <div className='overflow-hidden'>
+      <UserContext.Provider value={[loggedInUser, setLoggedInUser]}>
+        <h3>email: {loggedInUser.email}</h3>
         <BrowserRouter>
         <Header />
           <Routes>
@@ -31,6 +36,7 @@ function App() {
             <Route path='*' element={<Error />} />
           </Routes>
         </BrowserRouter>
+      </UserContext.Provider>
     </div>
   );
 }
