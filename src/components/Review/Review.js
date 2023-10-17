@@ -37,9 +37,10 @@ const Review = () => {
   }
 
   const handleProceedCheckout = () => {
-    setCart([]);
-    setOrderPlaced(true)
-    clearLocalShoppingCart()
+    // setCart([]);
+    // setOrderPlaced(true)
+    // clearLocalShoppingCart()
+    navigate('/shipment');
   }
   
   let thankYou;
@@ -55,7 +56,7 @@ const Review = () => {
             </Col>
             <Col className="cart-container " xs={{ span: 12, order: 1}} lg={{span: 3, order: 2}}>
               <Cart cart={cart} >
-                <button className='main-button' onClick={handleProceedCheckout}>Placed Order</button>
+                <button className='main-button' onClick={handleProceedCheckout}>Proceed Checkout</button>
               </Cart>  
             </Col>
         </Row>
