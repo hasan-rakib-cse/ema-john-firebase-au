@@ -64,7 +64,9 @@ const Shop = () => {
                     }
                 </Col>
                 <Col className="cart-container " xs={{ span: 12, order: 1}} lg={{span: 3, order: 2}}>
-                    <Cart cart={cart} reviewBtn={<Link style={{textDecoration: 'none'}} to={'/review'}><button className='main-button'>Review Order</button></Link>} />
+                    <Cart cart={cart}>
+                        <Link style={{textDecoration: 'none'}} to={'/review'}><button className='main-button'>Review Order</button></Link>  
+                    </Cart>
                 </Col>
             </Row>
         </div>

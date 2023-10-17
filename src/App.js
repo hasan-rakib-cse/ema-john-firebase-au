@@ -9,6 +9,8 @@ import Header from './components/Header/Header';
 import Home from './components/Home/Home';
 import Manage from './components/Manage/ManageInventory';
 import ProductDetail from './components/ProductDetail/ProductDetail';
+import Shipment from './components/Shipment/Shipment';
+import Login from './components/Login/Login';
 
 function App() {
   return (
@@ -21,6 +23,8 @@ function App() {
           <Route path='/product/:key' element={<ProductDetail />} />
           <Route path='/review' element={<Review />} />
           <Route path='/manageInventory' element={<Manage />} />
+          <Route path='/shipment' element={<Shipment />} />
+          <Route path='/login' element={<Login />} />
           <Route path='*' element={<Error />} />
         </Routes>
       </BrowserRouter>

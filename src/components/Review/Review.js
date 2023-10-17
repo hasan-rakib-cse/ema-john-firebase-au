@@ -45,19 +45,17 @@ const Review = () => {
   } 
   return (
     <div className='twin-container'>
-
-        <div className='twin-container'>
-            <Row>
-                <Col className="product-container" xs={{ span: 12, order: 2 }} lg={{span: 9, order: 1}}>
-                {cart.map(pd => <ReviewItem key={pd.key} product={pd} removeProduct={handleRemoveProduct} />)}
-                { thankYou }
-                </Col>
-                <Col className="cart-container " xs={{ span: 12, order: 1}} lg={{span: 3, order: 2}}>
-                  <Cart cart={cart} />  
-                  <button className='main-button' onClick={handlePlacedOrder}>Place Order</button>
-                </Col>
-            </Row>
-        </div>
+        <Row>
+            <Col className="product-container" xs={{ span: 12, order: 2 }} lg={{span: 9, order: 1}}>
+              {cart.map(pd => <ReviewItem key={pd.key} product={pd} removeProduct={handleRemoveProduct} />)}
+              { thankYou }
+            </Col>
+            <Col className="cart-container " xs={{ span: 12, order: 1}} lg={{span: 3, order: 2}}>
+              <Cart cart={cart} >
+                <button className='main-button' onClick={handlePlacedOrder}>Place Order</button>
+              </Cart>  
+            </Col>
+        </Row>
     </div>
   )
 }
