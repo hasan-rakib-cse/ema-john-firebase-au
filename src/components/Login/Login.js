@@ -4,6 +4,7 @@ import 'firebase/auth'
 import firebaseConfig from './firebase.config';
 import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, FacebookAuthProvider } from "firebase/auth";
 import { UserContext } from '../UserContext/UserContext';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 
 
 firebase.initializeApp(firebaseConfig)
@@ -26,8 +27,31 @@ function Login() {
     success: false
   })
 
+
+
+
+
+
   // Use context Api for data passing anywhere
   const [loggedInUser, setLoggedInUser] = useContext(UserContext);
+
+  // When logged-in the redirect the wanted page.
+  const navigate = useNavigate();
+  const location = useLocation();
+  // console.log('location: ', location)
+  // let { from } = location.state?.from || {from : {pathname: "/"}}
+  // let { from } = location.state || {from : {pathname: "/"}}
+  const from = location.state?.from?.pathname || '/'
+  console.log('location: ', location)
+
+
+
+
+
+
+
+
+
 
   // Sign In with Google
   const handleSignIn = () => {
@@ -111,6 +135,11 @@ function Login() {
       });
     }
 
+
+
+
+
+
     // Sign In with Email & Password
     if(!newUser && user.email && user.password) {
       signInWithEmailAndPassword(auth, user.email, user.password)
@@ -122,8 +151,29 @@ function Login() {
         newUserInfo.success = true;
         setUser(newUserInfo);
         setLoggedInUser(newUserInfo);
+        navigate(from, {replace: true})
+        // <Navigate to={from} replace state={location.state} />
+        // <Navigate to="/" replace state={{ from: location.state }} />
+        // navigate("/", { replace: true })
+        // navigate(location.state?.from, { replace: true })
+        // navigate("/shop", { replace: true })
+        // if(location.state?.from) {
+        //     <Navigate to={location.state.from} />
+        // }
+        // if (location.state?.from) {
+        //   navigate(from);
+        // }
+        // <Navigate to={from} replace state={{ from: location }} />;
         console.log('sign In User Info', res.user);
       })
+
+
+
+
+
+
+
+
       .catch((error) => {
         const newUserInfo = {...user};
         newUserInfo.error = error.message;
@@ -206,3 +256,5 @@ function Login() {
 }
 
 export default Login;
+
+// return isAuth ? ( <Outlet /> ) : ( <Navigate to="/" replace state={{ from: location }} /> );
