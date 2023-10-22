@@ -15,6 +15,7 @@ function Login() {
   const googleProvider = new GoogleAuthProvider();
   const facebookProvider = new FacebookAuthProvider();
 
+  const [loading, setIsLoading] = useState(true);
   const [newUser, setNewUser] = useState(false);
 
   const [user, setUser] = useState({
@@ -28,29 +29,13 @@ function Login() {
   })
 
 
-
-
-
-
   // Use context Api for data passing anywhere
   const [loggedInUser, setLoggedInUser] = useContext(UserContext);
 
   // When logged-in the redirect the wanted page.
   const navigate = useNavigate();
   const location = useLocation();
-  // console.log('location: ', location)
-  // let { from } = location.state?.from || {from : {pathname: "/"}}
-  // let { from } = location.state || {from : {pathname: "/"}}
   const from = location.state?.from?.pathname || '/'
-  console.log('location: ', location)
-
-
-
-
-
-
-
-
 
 
   // Sign In with Google
@@ -136,42 +121,20 @@ function Login() {
     }
 
 
-
-
-
-
     // Sign In with Email & Password
     if(!newUser && user.email && user.password) {
       signInWithEmailAndPassword(auth, user.email, user.password)
       .then((res) => {
         // Signed in 
-        // const user = userCredential.user;
         const newUserInfo = {...user};
         newUserInfo.error = '';
         newUserInfo.success = true;
         setUser(newUserInfo);
         setLoggedInUser(newUserInfo);
-        navigate(from, {replace: true})
-        // <Navigate to={from} replace state={location.state} />
-        // <Navigate to="/" replace state={{ from: location.state }} />
-        // navigate("/", { replace: true })
-        // navigate(location.state?.from, { replace: true })
-        // navigate("/shop", { replace: true })
-        // if(location.state?.from) {
-        //     <Navigate to={location.state.from} />
-        // }
-        // if (location.state?.from) {
-        //   navigate(from);
-        // }
-        // <Navigate to={from} replace state={{ from: location }} />;
+        navigate(from, {replace: true});
+        setIsLoading(false)
         console.log('sign In User Info', res.user);
       })
-
-
-
-
-
-
 
 
       .catch((error) => {
@@ -218,6 +181,8 @@ function Login() {
       console.log(credential)
     });
   }
+
+  loading && <p>Loading......</p>
 
   return (
     <div style={{textAlign: 'center', padding: '30px 10px'}}>

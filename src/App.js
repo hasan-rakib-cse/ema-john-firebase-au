@@ -33,24 +33,25 @@ function App() {
             <Route path='/shop' element={<Shop />} />
             <Route path='/product/:key' element={<ProductDetail />} />
             <Route path='/review' element={<Review />} />
-            <Route path="/manageInventory" element={<PrivateRoute redirectTo="/login"> <Login /> </PrivateRoute>} />
+            {/* <Route path="/manageInventory" element={<PrivateRoute redirectTo="/login"> <Login /> </PrivateRoute>} /> */}
             {/* <Route path="/manageInventory" element={<PrivateRoute> <ManageInventory /> </PrivateRoute>} /> */}
+            <Route path="/manageInventory" element={<PrivateRoute> <ManageInventory /> </PrivateRoute>} />
             <Route path='/login' element={<Login />} />
 
-            <Route path="/shipment"
+            {/* <Route path="/shipment"
               element={
                 <PrivateRoute redirectTo="/login">
                   <Login />
                 </PrivateRoute>
               }
-            />
-            {/* <Route path="/shipment"
+            /> */}
+            <Route path="/shipment"
               element={
                 <PrivateRoute>
-                  <Shipment />
+                  <Shipment></Shipment>
                 </PrivateRoute>
               }
-            /> */}
+            />
             
             <Route path='*' element={<Error />} />
 
