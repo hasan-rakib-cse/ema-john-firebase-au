@@ -35,8 +35,7 @@ function Login() {
   const googleSignIn = () => {
     handleGoogleSignIn()
     .then(res => {
-      setUser(res);
-      setLoggedInUser(res)
+      handleResponse(res, true)
     });
   }
 
@@ -44,8 +43,7 @@ function Login() {
   const signOut = () => {
     handleSignOut()
     .then(res => {
-      setUser(res);
-      setLoggedInUser(res);
+      handleResponse(res, false)
     })
   }
 
@@ -75,9 +73,7 @@ function Login() {
     if(newUser && user.email && user.password) {
       createUserWithEmailPassword(user.name, user.email, user.password)
       .then(res => {
-        setUser(res);
-        setLoggedInUser(res);
-        navigate(from, {replace: true});
+        handleResponse(res, true)
         setIsLoading(false)
       })
     }
@@ -87,9 +83,7 @@ function Login() {
     if(!newUser && user.email && user.password) {
       signInWithEmailPassword(user.email, user.password)
       .then(res => {
-        setUser(res);
-        setLoggedInUser(res);
-        navigate(from, {replace: true});
+        handleResponse(res, true)
         setIsLoading(false)
       })
     }
@@ -101,9 +95,17 @@ function Login() {
   const fbSignIn = () => {
     handleFbSignIn()
     .then(res => {
-      setUser(res);
-      setLoggedInUser(res);
+      handleResponse(res, true)
     })
+  }
+  
+  // same code optimized.
+  const handleResponse = (res, redirect) => {
+    setUser(res);
+    setLoggedInUser(res)
+    if(redirect) {
+      navigate(from, {replace: true});
+    }
   }
 
   loading && <p>Loading......</p>
