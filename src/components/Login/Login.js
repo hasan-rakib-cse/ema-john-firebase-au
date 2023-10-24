@@ -1,19 +1,11 @@
 import React, { useContext, useState } from 'react';
-import * as firebase from 'firebase/app'
-import 'firebase/auth'
-import firebaseConfig from './firebase.config';
-import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, FacebookAuthProvider } from "firebase/auth";
+
 import { UserContext } from '../UserContext/UserContext';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { createUserWithEmailPassword, handleFbSignIn, handleGoogleSignIn, handleSignOut, initializeLoginFramework, signInWithEmailPassword } from './loginManager';
 
-
-firebase.initializeApp(firebaseConfig)
 
 function Login() {
-
-  const auth = getAuth();
-  const googleProvider = new GoogleAuthProvider();
-  const facebookProvider = new FacebookAuthProvider();
 
   const [loading, setIsLoading] = useState(true);
   const [newUser, setNewUser] = useState(false);
@@ -28,6 +20,7 @@ function Login() {
     success: false
   })
 
+  initializeLoginFramework();
 
   // Use context Api for data passing anywhere
   const [loggedInUser, setLoggedInUser] = useContext(UserContext);
@@ -39,45 +32,21 @@ function Login() {
 
 
   // Sign In with Google
-  const handleSignIn = () => {
-    signInWithPopup(auth, googleProvider)
-    .then((result) => {
-
-      // This gives you a Google Access Token. You can use it to access the Google API.
-      // const credential = GoogleAuthProvider.credentialFromResult(result);
-      // const token = credential.accessToken;
-      const {displayName, photoURL, email} = result.user;
-      const signedInUser = {
-        isSignedIn: true,
-        name: displayName,
-        email: email,
-        photo: photoURL
-      }
-      setUser(signedInUser);
-
-    }).catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      const email = error.customData.email;
-      const credential = GoogleAuthProvider.credentialFromError(error);
-
-      console.log(errorCode, errorMessage, email, credential);
+  const googleSignIn = () => {
+    handleGoogleSignIn()
+    .then(res => {
+      setUser(res);
+      setLoggedInUser(res)
     });
   }
 
   // Sign Out with Google
-  const handleSignOut = () => {
-    signOut(auth).then((res) => {
-      const signedOutUser = {
-        isSignedIn: false,
-        name: '',
-        email: '',
-        photo: ''
-      }
-      setUser(signedOutUser);
-    }).catch((error) => {
-      
-    });
+  const signOut = () => {
+    handleSignOut()
+    .then(res => {
+      setUser(res);
+      setLoggedInUser(res);
+    })
   }
 
   // Save email & password in state
@@ -104,82 +73,37 @@ function Login() {
 
     // Sign Up with Email & Password
     if(newUser && user.email && user.password) {
-      createUserWithEmailAndPassword(auth, user.email, user.password)
-      .then((res) => {
-        const newUserInfo = {...user};
-        newUserInfo.error = '';
-        newUserInfo.success = true;
-        setUser(newUserInfo);
-        updateUserName(user.name)
+      createUserWithEmailPassword(user.name, user.email, user.password)
+      .then(res => {
+        setUser(res);
+        setLoggedInUser(res);
+        navigate(from, {replace: true});
+        setIsLoading(false)
       })
-      .catch((error) => {
-        const newUserInfo = {...user};
-        newUserInfo.error = error.message;
-        newUserInfo.success = false;
-        setUser(newUserInfo);
-      });
     }
 
 
     // Sign In with Email & Password
     if(!newUser && user.email && user.password) {
-      signInWithEmailAndPassword(auth, user.email, user.password)
-      .then((res) => {
-        // Signed in 
-        const newUserInfo = {...user};
-        newUserInfo.error = '';
-        newUserInfo.success = true;
-        setUser(newUserInfo);
-        setLoggedInUser(newUserInfo);
+      signInWithEmailPassword(user.email, user.password)
+      .then(res => {
+        setUser(res);
+        setLoggedInUser(res);
         navigate(from, {replace: true});
         setIsLoading(false)
-        console.log('sign In User Info', res.user);
       })
-
-
-      .catch((error) => {
-        const newUserInfo = {...user};
-        newUserInfo.error = error.message;
-        newUserInfo.success = false;
-        setUser(newUserInfo);
-      });
     }
 
   }
 
-  // Update a user's profile with Email & Password
-  const updateUserName = (name) => {
-    updateProfile(auth.currentUser, {
-      displayName: name
-    }).then(() => {
-      console.log('user name updated successfully')
-    }).catch((error) => {
-      console.log(error)
-    });
-  }
 
   // Sign In with Facebook
-  const handleFbSignIn = () => {
-    signInWithPopup(auth, facebookProvider)
-    .then((result) => {
-      const user = result.user;
-      console.log('FB user after sign-in', user)
-
-      // This gives you a Facebook Access Token. You can use it to access the Facebook API.
-      // const credential = FacebookAuthProvider.credentialFromResult(result);
-      // const accessToken = credential.accessToken;
+  const fbSignIn = () => {
+    handleFbSignIn()
+    .then(res => {
+      setUser(res);
+      setLoggedInUser(res);
     })
-    .catch((error) => {
-
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      const email = error.customData.email;
-      const credential = FacebookAuthProvider.credentialFromError(error);
-      console.log(errorCode)
-      console.log(errorMessage)
-      console.log(email)
-      console.log(credential)
-    });
   }
 
   loading && <p>Loading......</p>
@@ -187,9 +111,9 @@ function Login() {
   return (
     <div style={{textAlign: 'center', padding: '30px 10px'}}>
 
-      { user.isSignedIn ? <button onClick={handleSignOut}>Sign Out</button> : <button onClick={handleSignIn}>Sign In</button> }
+      { user.isSignedIn ? <button onClick={signOut}>Sign Out</button> : <button onClick={googleSignIn}>Sign In</button> }
       <br />
-      <button onClick={handleFbSignIn}>Sign In With Facebook</button>
+      <button onClick={fbSignIn}>Sign In With Facebook</button>
 
       {
         user.isSignedIn && <div>
@@ -221,5 +145,3 @@ function Login() {
 }
 
 export default Login;
-
-// return isAuth ? ( <Outlet /> ) : ( <Navigate to="/" replace state={{ from: location }} /> );
