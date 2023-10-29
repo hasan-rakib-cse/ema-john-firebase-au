@@ -25,7 +25,6 @@ function App() {
   return (
     <div className='overflow-hidden'>
       <UserContext.Provider value={ [ loggedInUser, setLoggedInUser ] }>
-        <h3>email: {loggedInUser.email}</h3>
         <BrowserRouter>
         <Header />
           <Routes>
@@ -33,8 +32,10 @@ function App() {
             <Route path='/shop' element={<Shop />} />
             <Route path='/product/:key' element={<ProductDetail />} />
             <Route path='/review' element={<Review />} />
+
             {/* <Route path="/manageInventory" element={<PrivateRoute redirectTo="/login"> <Login /> </PrivateRoute>} /> */}
             {/* <Route path="/manageInventory" element={<PrivateRoute> <ManageInventory /> </PrivateRoute>} /> */}
+
             <Route path="/manageInventory" element={<PrivateRoute> <ManageInventory /> </PrivateRoute>} />
             <Route path='/login' element={<Login />} />
 
@@ -45,6 +46,7 @@ function App() {
                 </PrivateRoute>
               }
             /> */}
+            
             <Route path="/shipment"
               element={
                 <PrivateRoute>

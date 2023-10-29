@@ -113,7 +113,7 @@ function Login() {
   return (
     <div style={{textAlign: 'center', padding: '30px 10px'}}>
 
-      { user.isSignedIn ? <button onClick={signOut}>Sign Out</button> : <button onClick={googleSignIn}>Sign In</button> }
+      { user.isSignedIn ? <button onClick={signOut}>Sign Out</button> : <button onClick={googleSignIn}>Sign In With Google</button> }
       <br />
       <button onClick={fbSignIn}>Sign In With Facebook</button>
 
