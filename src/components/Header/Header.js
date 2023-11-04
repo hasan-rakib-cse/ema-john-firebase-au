@@ -3,6 +3,7 @@ import logo from '../../images/logo.png';
 import './Header.css';
 import { NavLink } from 'react-router-dom';
 import { UserContext } from '../UserContext/UserContext';
+import { resetPassword } from '../Login/loginManager';
 
 const Header = () => {
     const [loggedInUser, setLoggedInUser] = useContext(UserContext);

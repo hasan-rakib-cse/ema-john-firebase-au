@@ -3,7 +3,8 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 // import 'firebase/compat/firestore';
 import firebaseConfig from './firebase.config';
-import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, FacebookAuthProvider } from "firebase/auth";
+import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword,
+  updateProfile, FacebookAuthProvider, sendEmailVerification, sendPasswordResetEmail } from "firebase/auth";
 
 firebase.initializeApp(firebaseConfig)
 
@@ -93,7 +94,8 @@ export const handleSignOut = () => {
         const newUserInfo = res.user;
         newUserInfo.error = '';
         newUserInfo.success = true;
-        updateUserName(name)
+        updateUserName(name);
+        verifyEmail();
         return newUserInfo;
       })
       .catch((error) => {
@@ -135,3 +137,30 @@ const updateUserName = (name) => {
       console.log(error)
     });
 }
+
+
+// Send a user a verification email for new User
+const verifyEmail = () => {
+
+  sendEmailVerification(auth.currentUser)
+  .then(() => {
+    // Email verification sent!
+    // ...
+  });
+}
+
+// Send a password reset email
+export const resetPassword = (email) => {
+  sendPasswordResetEmail(auth, email)
+  .then(() => {
+    // Password reset email sent!
+    // ..
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    // ..
+  });
+}
+
+

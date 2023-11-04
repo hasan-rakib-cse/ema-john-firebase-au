@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 
 import { UserContext } from '../UserContext/UserContext';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
-import { createUserWithEmailPassword, handleFbSignIn, handleGoogleSignIn, handleSignOut, initializeLoginFramework, signInWithEmailPassword } from './loginManager';
+import { createUserWithEmailPassword, handleFbSignIn, handleGoogleSignIn, handleSignOut, initializeLoginFramework, resetPassword, signInWithEmailPassword } from './loginManager';
 
 
 function Login() {
@@ -138,6 +138,7 @@ function Login() {
         <br/>
         <input type="submit" value={newUser ? 'Sign Up' : 'Sign In'} />
       </form>
+      {!newUser && <button onClick={() => resetPassword(user.email)}>Forget or Reset Password</button>}
 
       <p style={{color: 'red'}}>{user.error}</p>
       {user.success && <p style={{color: 'green'}}>User {newUser ? 'created' : 'Logged In'} Successfully.</p>}
